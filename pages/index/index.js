@@ -8,9 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    minuteSet: 3,
+    minuteSet: 0.2,
     leftTime: '00:00',
-    timesNum: 100
+    timesNum: 100,
   },
   bindKeyInput: function (e) {
     this.setData({
@@ -33,12 +33,14 @@ Page({
   bindStartBtn: function () {
     clearInterval(this.showLeft);
     clearInterval(this.interval);
+    this.buttonOn = true;
+    this.startTime = new Date();
     this.setData({
       timesNum: 0,
       leftTime: this.secondsToHms(this.data.minuteSet * 60)
     })
-    var timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
-    this.timeSlot = 100 / timesTotal;
+    this.timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
+    this.timeSlot = 100 / this.timesTotal;
     this.timesCount = 0
     this.showTimeLeft();
     this.interval = setInterval(this.drawShalou, this.redrawTimeSlot);
@@ -50,18 +52,22 @@ Page({
     var secs1 = 60 * timeMinute;// 总秒数
     var secs2 = 0;
     if (runTimer) {
-      clearInterval(that.showLeft)
+      clearInterval(that.showLeft);
+      this.buttonOn = false;
     } else {
       that.showLeft = setInterval(function () {
         // console.log(secs1);
         // console.log(secs2);
         if (secs1 <= 1) {
           clearInterval(that.showLeft);
+          this.buttonOn = false;
           runTimer = false;
           // flag = false;
         }
-        secs1--;
-        secs2++;
+        // secs1--;
+        secs2 = parseInt((new Date() - that.startTime) / 1000)
+        secs1 = 60 * timeMinute - secs2;
+        // secs2++;
         var timeLeft = that.secondsToHms(secs1);
         var timeAdd = that.secondsToHms(secs2);
         var denom = 60 * timeMinute;
@@ -99,15 +105,18 @@ Page({
    */
   onReady: function () {
     console.log('onReady');
+    this.startTime = new Date();
+    console.log('startTime:')
+    console.log((new Date() - this.startTime))
     this.redrawTimeSlot = 40;// 每40ms重画一次，比较流程
-    var timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
-    
+    this.timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
+    console.log(this.timesTotal)
     this.timesCount = 0;
     this.sideLength = this.windowHeight/10;
     this.gapWidth = 25;
     this.frameWidth = 15;
 
-    this.timeSlot = 100 / timesTotal;
+    this.timeSlot = 100 / this.timesTotal;
 
     this.drawShalou();
 
@@ -124,16 +133,28 @@ Page({
     // context.setFillStyle("#3B3B3B");
     // context.fillRect(0, 0, 350, 200);
     context.translate(this.windowWidth / 2, this.sideLength + this.gapWidth+this.frameWidth/2);
-    var timesNum = this.data.timesNum;
-    // console.log(timesNum);
-    if (timesNum >= 100) {
-      clearInterval(this.interval);
+    var timesNum = 0;
+    if(this.buttonOn){
+      timesNum = (new Date() - this.startTime) / this.redrawTimeSlot;
     }
-    this.setData({
-      timesNum: timesNum + this.timeSlot
-    })
+    else{
+      timesNum = this.timesTotal;
+    }
+    // var timesNum = this.data.timesNum;
+    
+    console.log(timesNum)
+    // console.log((new Date() - this.startTime))
+    // console.log((new Date() - this.startTime) / this.redrawTimeSlot);
+    if (timesNum >= this.timesTotal) {
+      // console.log(end);
+      clearInterval(this.interval);
+      this.buttonOn = false;
+    }
+    // this.setData({
+    //   timesNum: timesNum + this.timeSlot
+    // })
     this.drawDroping(context, this.timesCount);
-    this.drawSha(context, timesNum);
+    this.drawSha(context, timesNum/this.timesTotal*100);
     // context.restore();
     this.drawFrame(context);
     //调用wx.drawCanvas，通过canvasId指定在哪张画布上绘制，通过actions指定绘制行为
@@ -177,7 +198,7 @@ Page({
     // context.translate(0, 1*gapWidth);
   },
   drawSha: function (context, i) {
-    console.log(i);
+    // console.log(i);
     var sideLenth = this.sideLength+10;
     var curSide = sideLenth*(1 - i/100);
     var dig = Math.PI / 4;
@@ -215,8 +236,8 @@ Page({
   onShow: function () {
     console.log('onShow');
     this.redrawTimeSlot = 40;// 每40ms重画一次，比较流程
-    var timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
-    this.timeSlot = 100 / timesTotal;
+    this.timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
+    this.timeSlot = 100 / this.timesTotal;
     this.timesCount = 0
 
     this.drawShalou();
@@ -227,13 +248,13 @@ Page({
    */
   onHide: function () {
     console.log('onHide');
-    clearInterval(this.showLeft);
-    clearInterval(this.interval);
-    this.setData({
-      leftTime: '00:00',
-      timesNum: 100
-    });
-    this.timesCount = 0;
+    // clearInterval(this.showLeft);
+    // clearInterval(this.interval);
+    // this.setData({
+    //   leftTime: '00:00',
+    //   timesNum: 100
+    // });
+    // this.timesCount = 0;
   },
 
   /**
@@ -243,6 +264,7 @@ Page({
     console.log('onUnload');
     clearInterval(this.showLeft);
     clearInterval(this.interval);
+    this.buttonOn = false;
     this.setData({
       leftTime: '00:00',
       timesNum: 100
