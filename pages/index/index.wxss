@@ -1,0 +1,55 @@
+.container-1 {
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 200rpx 0; */
+    box-sizing: border-box;  
+}
+.canvas {
+    width: 100%;
+    height: 750rpx;
+}
+.start {
+  width: 200rpx;
+}
+.minute {
+  float: left;
+  line-height: 80rpx;
+}
+.minute-sub, .minute-add {
+  border-radius: 5rpx;
+  width: 80rpx;
+  height: 85rpx; 
+  background-color: #1a1a1a;
+  border: 1rpx solid white;
+  color:white;
+  align-items: center;
+  text-align: center;
+}
+.clear {
+  clear: left;
+}
+.time-set {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 30rpx;
+}
+.timeleft {
+  font-size: 80rpx;
+  padding-top: 50rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input{
+ width: 200rpx;
+ height: 80rpx; 
+ border: 1rpx solid white;
+ border-radius: 5rpx;
+ align-items: center;
+ text-align: center;
+}

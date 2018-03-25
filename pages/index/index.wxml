@@ -1,0 +1,12 @@
+<!--pages/shalou/shalou.wxml-->
+<view class='container-1'><view class='time-set'><label class='minute'>设置 </label><button class="minute minute-sub"  bindtap="bindMinuteSub"> - </button>
+<input type="number" class="minute input" value='{{minuteSet}}' bindinput="bindKeyInput"></input>
+<button class="minute minute-add"  bindtap="bindMinuteAdd"> + </button><label class='minute'> 分钟</label></view></view>
+
+<view class="clear"></view>
+<view class="timeleft">{{leftTime}}</view>
+<view class='shalou'>
+  <canvas canvas-id="shalou-canvas" class='canvas'/>
+  
+</view>
+<button type="primary" class="start"  bindtap="bindStartBtn"> 开始 </button>
