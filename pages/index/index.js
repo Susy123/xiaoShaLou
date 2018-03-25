@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    minuteSet: 0.2,
+    minuteSet: 3,
     leftTime: '00:00',
     timesNum: 100
   },
@@ -87,6 +87,11 @@ Page({
    */
   onLoad: function (options) {
     console.log('onLoad');
+    var res = wx.getSystemInfoSync();
+    this.windowWidth = res.windowWidth;
+    this.windowHeight = res.windowHeight;
+    console.log(this.windowWidth);
+    console.log(this.windowHeight);
   },
 
   /**
@@ -98,7 +103,7 @@ Page({
     var timesTotal = this.data.minuteSet * 60 * 1000 / this.redrawTimeSlot;
     
     this.timesCount = 0;
-    this.sideLength = 70;
+    this.sideLength = this.windowHeight/10;
     this.gapWidth = 25;
     this.frameWidth = 15;
 
@@ -118,7 +123,7 @@ Page({
     context.scale(1, 1.7);
     // context.setFillStyle("#3B3B3B");
     // context.fillRect(0, 0, 350, 200);
-    context.translate(200, 110);
+    context.translate(this.windowWidth / 2, this.sideLength + this.gapWidth+this.frameWidth/2);
     var timesNum = this.data.timesNum;
     // console.log(timesNum);
     if (timesNum >= 100) {
