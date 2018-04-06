@@ -8,9 +8,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    minuteSet: 0.2,
+    minuteSet: 3,
     leftTime: '00:00',
     timesNum: 100,
+    isShowShalou: false,
+  },
+  showShalouClick:function(){
+    this.setData({
+      isShowShalou: true,
+    })
   },
   bindKeyInput: function (e) {
     this.setData({

@@ -1,7 +1,20 @@
 <!--pages/shalou/shalou.wxml-->
-<view class='container-1'><view class='time-set'><label class='minute'>设置 </label><button class="minute minute-sub"  bindtap="bindMinuteSub"> - </button>
-<input type="number" class="minute input" value='{{minuteSet}}' bindinput="bindKeyInput"></input>
-<button class="minute minute-add"  bindtap="bindMinuteAdd"> + </button><label class='minute'> 分钟</label></view></view>
+<view class='firstView' wx:if="{{!isShowShalou}}">
+  <text>道理和行动之间，有3分钟的鸿沟</text>
+  <button  type="primary" class='showbutton' bindtap='showShalouClick'>坚持三分钟</button>
+</view>
+<view class='shalouView' wx:else>
+<view class='container-1'>
+  <view class='time-set'>
+    <label class='minute'>设置 </label>
+    <view class='setButton'>
+        <button class="minute minute-sub"  bindtap="bindMinuteSub"> - </button>
+        <input type="number" class="minute input" value='{{minuteSet}}' bindinput="bindKeyInput"></input>
+        <button class="minute minute-add"  bindtap="bindMinuteAdd"> + </button>
+    </view>
+    <label class='minute'> 分钟</label>
+  </view> 
+</view>
 
 <view class="clear"></view>
 <view class="timeleft">{{leftTime}}</view>
@@ -10,3 +23,4 @@
   
 </view>
 <button type="primary" class="start"  bindtap="bindStartBtn"> 开始 </button>
+</view>
