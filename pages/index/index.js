@@ -99,6 +99,10 @@ Page({
    */
   onLoad: function (options) {
     console.log('onLoad');
+    // 保持屏幕常亮
+    wx.setKeepScreenOn({
+      keepScreenOn: true
+    })
     var res = wx.getSystemInfoSync();
     this.windowWidth = res.windowWidth;
     this.windowHeight = res.windowHeight;
